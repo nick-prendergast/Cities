@@ -2,8 +2,9 @@
 
 ## About App
 
-This is a "City" CRUD RESTful Web Service with Spring/Spring Boot/Hibernate H2 in memory database. 
+This is a "City" CRUD RESTful Web Service with Spring Boot/Hibernate H2 in memory database. 
 
+You can - 
 
 * **browse through the paginated list of cities with the corresponding photos**
 ```
