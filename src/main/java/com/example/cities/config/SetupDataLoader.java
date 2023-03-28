@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.core.io.ClassPathResource;
@@ -19,6 +20,9 @@ import java.io.Reader;
 @Component
 @RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
+
+    @Value("${csvImportFileName}")
+    private String csvFile;
 
     @Autowired
     CityRepository cityRepository;
@@ -35,7 +39,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     }
 
     void insertCitiesFromCSV() {
-        try (Reader in = new FileReader(new ClassPathResource("cities.csv").getFile())) {
+        try (Reader in = new FileReader(new ClassPathResource(csvFile).getFile())) {
+            log.info("importing from csv {}", csvFile);
             CSVFormat.RFC4180.builder()
                     .setAllowMissingColumnNames(true).setHeader("id", "name", "photo")
                     .setSkipHeaderRecord(true).build().parse(in).forEach(record -> {
